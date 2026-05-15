@@ -1,90 +1,80 @@
-# 🚀 KUBERA - AI-Powered Stock Analysis Chatbot
+🚀 KUBERA - AI-Powered Stock Analysis Chatbot
+Python 3.11+ FastAPI PostgreSQL License: MIT
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-316192.svg)](https://www.postgresql.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+KUBERA is an intelligent stock analysis chatbot specialized in Indian markets (NSE/BSE). Built with FastAPI, PostgreSQL, and OpenRouter (supporting multiple LLMs including Llama 3.3, Claude, GPT-4), it provides comprehensive stock analysis through AI-powered conversations.
 
-**KUBERA** is an intelligent stock analysis chatbot specialized in Indian markets (NSE/BSE). Built with FastAPI, PostgreSQL, and OpenRouter (supporting multiple LLMs including Llama 3.3, Claude, GPT-4), it provides comprehensive stock analysis through AI-powered conversations.
+🌍 Live Deployment
+The application is fully deployed and available online:
 
----
-
-## 📋 Table of Contents
-
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Database Setup](#-database-setup)
-- [Running the Application](#-running-the-application)
-- [API Documentation](#-api-documentation)
-- [MCP Servers](#-mcp-servers)
-- [WebSocket Protocol](#-websocket-protocol)
-- [Background Jobs](#-background-jobs)
-- [Rate Limiting](#-rate-limiting)
-- [Email Notifications](#-email-notifications)
-- [Docker Deployment](#-docker-deployment)
-- [Development](#-development)
-- [Testing](#-testing)
-- [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
-- [License](#-license)
-
----
-
-## ✨ Features
-
-### Core Features
-- 🤖 **AI-Powered Chat**: Real-time conversations powered by OpenRouter (Llama 3.3, Claude, GPT-4, etc.)
-- 📊 **Stock Analysis**: Comprehensive analysis of NSE/BSE stocks
-- 💼 **Portfolio Tracking**: Track your investments with live price updates
-- 📈 **Technical Analysis**: 45 MCP tools for in-depth analysis
-- 🎨 **Visualizations**: Beautiful charts and graphs via Plotly
-- 📰 **News & Sentiment**: Real-time market news and sentiment analysis
-
-### Authentication & Security
-- 🔐 **3-Step OTP Registration**: Email-based verification
-- 🎫 **JWT Authentication**: Secure access and refresh tokens
-- 🔒 **Password Security**: Bcrypt hashing with strict requirements
-- 🔄 **Session Management**: Automatic token refresh
-
-### Rate Limiting
-- ⚡ **4-Level Fail-Fast System**:
-  - Burst: 10 prompts/minute
-  - Per-Chat: 50 prompts/chat
-  - Hourly: 150 prompts/hour
-  - Daily: 1000 prompts/24 hours
-
-### Email Notifications
-- 📧 **15+ Email Triggers**:
-  - Registration OTP
-  - Password reset
-  - Welcome email
-  - Rate limit notifications
-  - Portfolio reports
-  - Security alerts
-
-### Admin Panel
-- 🎛️ **Complete System Management**:
-  - User management
-  - Rate limit configuration
-  - System control (start/stop)
-  - Analytics dashboard
-  - Activity logs
-
-### Background Jobs
-- ⏰ **Automated Tasks**:
-  - Portfolio price updates (every 30 mins)
-  - Daily/weekly/monthly reports
-  - Cleanup jobs (OTPs, tokens)
-
----
-
-## 🏗️ Architecture
-
-```
+Frontend Application: https://kubera-frontend-olive.vercel.app/
+(Deployed via Vercel)
+Backend API: https://kubera007.duckdns.org | WebSocket: wss://kubera007.duckdns.org
+(Running on AWS EC2 t3.micro using Docker containerization. Mapped to EC2 IP 54.206.176.208 using DuckDNS to support secure HTTPS/WSS connections for Vercel compatibility).
+Docker Image: Available on Docker Hub at tejascm/kubera-backend
+📋 Table of Contents
+Features
+Architecture
+Tech Stack
+Project Structure
+Installation
+Configuration
+Database Setup
+Running the Application
+API Documentation
+MCP Servers
+WebSocket Protocol
+Background Jobs
+Rate Limiting
+Email Notifications
+Docker Deployment
+Development
+Troubleshooting
+Contributing
+License
+Features
+Core Features
+🤖 AI-Powered Chat: Real-time conversations powered by OpenRouter (Llama 3.3, Claude, GPT-4, etc.)
+📊 Stock Analysis: Comprehensive analysis of NSE/BSE stocks
+💼 Portfolio Tracking: Track your investments with live price updates
+📈 Technical Analysis: 45 MCP tools for in-depth analysis
+🎨 Visualizations: Beautiful charts and graphs via Plotly
+📰 News & Sentiment: Real-time market news and sentiment analysis
+Authentication & Security
+🔐 3-Step OTP Registration: Email-based verification
+🎫 JWT Authentication: Secure access and refresh tokens
+🔒 Password Security: Bcrypt hashing with strict requirements
+🔄 Session Management: Automatic token refresh
+Rate Limiting
+⚡ 4-Level Fail-Fast System (DB-driven, configurable via Admin Panel):
+Burst: 10 prompts/minute (default)
+Per-Chat: 50 prompts/chat (default)
+Hourly: 150 prompts/hour (default)
+Daily: 1000 prompts/24 hours (default)
+Whitelist: selected users bypass all limits
+Per-user overrides: custom limits per user
+Email Notifications
+📧 15+ Email Triggers:
+Registration OTP
+Password reset
+Welcome email
+Rate limit violation notifications
+Portfolio reports (sent to all active users)
+Account deactivation / reactivation (users & admins)
+Security alerts
+Admin Panel
+🎛️ Complete System Management:
+User management (activate/deactivate, user-specific rate overrides)
+Super Admin role: manages regular admins (activate/deactivate admins)
+Rate limit configuration — DB-driven, live without restarts
+System control (start/stop/maintenance)
+Analytics dashboard with role-aware pie charts
+Admin activity logs
+Background Jobs
+⏰ Automated Tasks:
+Portfolio price updates (every 30 mins)
+Daily/weekly/monthly reports
+Cleanup jobs (OTPs, tokens)
+Architecture
 ┌─────────────────────────────────────────────────────────────────┐
 │                     CLIENT (Browser/App)                        │
 └────────────────┬────────────────────────────┬───────────────────┘
@@ -94,9 +84,9 @@
 ┌────────────────▼────────────────────────────▼───────────────────┐
 │                    FASTAPI APPLICATION                          │
 │  ┌────────────────────────────────────────────────────────────┐ │
-│  │                    API Endpoints (50)                      │ │
+│  │                    API Endpoints (55)                      │ │
 │  │  Auth (11) | User (7) | Portfolio (5) | Chat (5)           │ │
-│  │        Admin (19) | Root (4) | WebSocket (1)               │ │
+│  │        Admin (22) | Root (4) | WebSocket (1)               │ │
 │  └────────────────────────────────────────────────────────────┘ │
 │  ┌────────────────────────────────────────────────────────────┐ │
 │  │                  Business Logic Layer                      │ │
@@ -113,58 +103,39 @@
 │    (15 tables)      │ │ (5 servers)  │ │     (APScheduler)       │
 │                     │ │ (45 tools)   │ │                         │
 └─────────────────────┘ └──────────────┘ └─────────────────────────┘
-```
-
----
-
-## 🛠️ Tech Stack
-
-### Backend
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| FastAPI | 0.109.0 | Web Framework |
-| Python | 3.11+ | Language |
-| Uvicorn | Latest | ASGI Server |
-| PostgreSQL | 14+ | Database |
-| AsyncPG | Latest | Async PostgreSQL Driver |
-
-### AI & LLM
-| Technology | Purpose |
-|------------|---------|
-| OpenRouter | LLM Gateway (multi-model) |
-| Llama 3.3-70B | Default LLM Model |
-| LangChain | LLM Orchestration |
-| FastMCP | MCP Protocol |
-
-### Data & Finance
-| Technology | Purpose |
-|------------|---------|
-| yfinance | Stock Data |
-| Pandas | Data Processing |
-| NumPy | Numerical Computing |
-| Plotly | Interactive Charts |
-| Matplotlib | Static Charts |
-
-### Authentication
-| Technology | Purpose |
-|------------|---------|
-| python-jose | JWT Tokens |
-| passlib (bcrypt) | Password Hashing |
-| Pydantic | Validation |
-
-### Infrastructure
-| Technology | Purpose |
-|------------|---------|
-| APScheduler | Background Jobs |
-| aiosmtplib | Async Email |
-| Docker | Containerization |
-| Supabase | Chart Storage |
-
----
-
-## 📁 Project Structure
-
-```
+Tech Stack
+Backend
+Technology	Version	Purpose
+FastAPI	0.109.0	Web Framework
+Python	3.11+	Language
+Uvicorn	Latest	ASGI Server
+PostgreSQL	14+	Database
+AsyncPG	Latest	Async PostgreSQL Driver
+AI & LLM
+Technology	Purpose
+OpenRouter	LLM Gateway (multi-model)
+Llama 3.3-70B	Default LLM Model
+LangChain	LLM Orchestration
+FastMCP	MCP Protocol
+Data & Finance
+Technology	Purpose
+yfinance	Stock Data
+Pandas	Data Processing
+NumPy	Numerical Computing
+Plotly	Interactive Charts
+Matplotlib	Static Charts
+Authentication
+Technology	Purpose
+python-jose	JWT Tokens
+passlib (bcrypt)	Password Hashing
+Pydantic	Validation
+Infrastructure
+Technology	Purpose
+APScheduler	Background Jobs
+aiosmtplib	Async Email
+Docker	Containerization
+Supabase	Chart Storage
+Project Structure
 kubera-backend/
 ├── main.py                           # FastAPI app entry point
 ├── app/
@@ -198,11 +169,11 @@ kubera-backend/
 │   │       └── admin_responses.py
 │   ├── api/                          # API routes
 │   │   └── routes/
-│   │       ├── auth_routes.py        # Authentication (8 endpoints)
-│   │       ├── user_routes.py        # User management (6 endpoints)
+│   │       ├── auth_routes.py        # Authentication (11 endpoints)
+│   │       ├── user_routes.py        # User management (7 endpoints)
 │   │       ├── portfolio_routes.py   # Portfolio (5 endpoints)
 │   │       ├── chat_routes.py        # Chat (5 endpoints)
-│   │       ├── admin_routes.py       # Admin (17 endpoints)
+│   │       ├── admin_routes.py       # Admin (22 endpoints)
 │   │       └── websocket_routes.py   # WebSocket (1 endpoint)
 │   ├── services/                     # Business logic
 │   │   ├── auth_service.py
@@ -228,10 +199,7 @@ kubera-backend/
 │   │   └── tasks/                    # Task implementations
 │   ├── db/                           # Database
 │   │   ├── migrations/               # SQL migrations
-│   │   │   ├── v1_initial_schema.sql
-│   │   │   ├── v2_indexes.sql
-│   │   │   ├── v2_add_chart_url.sql
-│   │   │   └── v3_constraints.sql
+│   │   │   └── v1_initial_schema.sql # Complete schema: tables, indexes, triggers, defaults
 │   │   └── repositories/             # Data access layer
 │   │       ├── user_repository.py
 │   │       ├── chat_repository.py
@@ -270,28 +238,16 @@ kubera-backend/
 ├── Dockerfile                        # Docker image
 ├── docker-compose.yml                # Docker Compose
 └── README.md                         # This file
-```
-
----
-
-## 📥 Installation
-
-### Prerequisites
-- Python 3.11 or higher
-- PostgreSQL 14 or higher
-- pip or uv (package manager)
-- (Optional) Docker & Docker Compose
-
-### 1. Clone Repository
-
-```bash
+Installation
+Prerequisites
+Python 3.11 or higher
+PostgreSQL 14 or higher
+pip or uv (package manager)
+(Optional) Docker & Docker Compose
+1. Clone Repository
 git clone https://github.com/yourusername/kubera-backend.git
 cd kubera-backend
-```
-
-### 2. Create Virtual Environment
-
-```bash
+2. Create Virtual Environment
 # Using venv
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
@@ -299,101 +255,90 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # OR using uv (recommended)
 uv venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
-
-### 3. Install Dependencies
-
-```bash
+3. Install Dependencies
 # Using pip
 pip install --upgrade pip
 pip install -r requirements.txt
 
 # OR using uv
 uv pip install -r requirements.txt
-```
+Configuration
+1. Environment Variables
+Copy .env.example to .env:
 
----
-
-## ⚙️ Configuration
-
-### 1. Environment Variables
-
-Copy `.env.example` to `.env`:
-
-```bash
 cp .env.example .env
-```
+Edit .env and configure the following:
 
-Edit `.env` and configure the following:
+APP_NAME=KUBERA
+APP_VERSION=1.0.0
+APP_ENV=development
+DEBUG=True
+ALLOWED_ORIGINS=http://localhost:3000,http://localhost:8000
 
-```env
-# ===========================================
-# CRITICAL SETTINGS
-# ===========================================
-SECRET_KEY=your_secret_key_here
-
-# ===========================================
-# LLM (OPENROUTER)
-# ===========================================
-OPENROUTER_API_KEY=sk-or-your-api-key
-OPENROUTER_MODEL=meta-llama/llama-3.3-70b-instruct  # or anthropic/claude-3.5-sonnet
-
-# ===========================================
-# DATABASE (SUPABASE)
-# ===========================================
-POSTGRES_HOST=your-project.pooler.supabase.com
+SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_ANON_KEY=your-supabase-anon-key
+POSTGRES_HOST=aws-0-ap-south-1.pooler.supabase.com
 POSTGRES_PORT=6543
-POSTGRES_USER=postgres.your-project
-POSTGRES_PASSWORD=your_password
+POSTGRES_USER=postgres.your-project-id
+POSTGRES_PASSWORD=your-database-password
 POSTGRES_DB=postgres
+DATABASE_URL=postgresql://postgres.your-project-id:your-password@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
+POSTGRES_MIN_POOL_SIZE=2
+POSTGRES_MAX_POOL_SIZE=10
 
-# ===========================================
-# SMTP (for emails)
-# ===========================================
+SECRET_KEY=your-secret-key-generate-with-secrets-token-hex-32
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_DAYS=7
+
+OPENROUTER_API_KEY=sk-or-v1-your-openrouter-api-key
+OPENROUTER_MODEL=openai/gpt-4o-mini
+OPENROUTER_SITE_URL=http://localhost:8000
+OPENROUTER_APP_NAME=KUBERA
+
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
-SMTP_PASSWORD=your-app-password
+SMTP_PASSWORD=your-gmail-app-password
 SMTP_FROM_EMAIL=your-email@gmail.com
+SMTP_FROM_NAME=KUBERA
 
-# ===========================================
-# SUPABASE (for chart storage)
-# ===========================================
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
+OTP_EXPIRE_MINUTES=10
+OTP_MAX_ATTEMPTS=3
 
-# ===========================================
-# OPTIONAL: EXTERNAL APIS
-# ===========================================
-FINNHUB_API_KEY=your-finnhub-key
-ALPHA_VANTAGE_API_KEY=your-alpha-vantage-key
-NEWS_API_KEY=your-news-api-key
-```
+RATE_LIMIT_BURST=10
+RATE_LIMIT_PER_CHAT=50
+RATE_LIMIT_PER_HOUR=150
+RATE_LIMIT_PER_DAY=1000
 
-### 2. Generate Secret Key
+PYTHON_EXECUTABLE=python
 
-```bash
+FINNHUB_API_KEY=your-finnhub-api-key
+NEWSAPI_KEY=your-newsapi-key
+ALPHA_VANTAGE_API_KEY=your-alphavantage-api-key
+MARKETAUX_API_KEY=your-marketaux-api-key
+INDIAN_API_KEY=your-indian-api-key
+
+PORTFOLIO_UPDATE_FREQUENCY=10
+PORTFOLIO_REPORT_FREQUENCY=disabled
+PORTFOLIO_REPORT_SEND_TIME=09:00
+PORTFOLIO_REPORT_DAY_WEEKLY=1
+PORTFOLIO_REPORT_DAY_MONTHLY=1
+
+TIMEZONE=Asia/Kolkata
+LOG_LEVEL=INFO
+LOG_FILE=logs/kubera.log
+2. Generate Secret Key
 # Using OpenSSL
 openssl rand -hex 32
 
 # OR using Python
 python -c "import secrets; print(secrets.token_hex(32))"
-```
-
----
-
-## 🗄️ Database Setup
-
-### Method 1: Automated Script (Recommended)
-
-```bash
+Database Setup
+Method 1: Automated Script (Recommended)
 # Initialize database, run migrations, seed data
 python scripts/init_db.py
-```
-
-### Method 2: Manual Setup
-
-```bash
+Method 2: Manual Setup
 # Step 1: Create database
 createdb kubera_db
 
@@ -405,56 +350,31 @@ python scripts/seed_admin.py
 
 # Step 4: Configure rate limits
 python scripts/seed_rate_limits.py
-```
-
-### Verify Setup
-
-```bash
+Verify Setup
 # Check migration status
 python scripts/run_migrations.py status
 
 # List admin users
 python scripts/seed_admin.py list
-```
-
----
-
-## 🚀 Running the Application
-
-### Development Mode
-
-```bash
+Running the Application
+Development Mode
 # With auto-reload
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 # OR simply
 python main.py
-```
-
-### Production Mode
-
-```bash
+Production Mode
 # Multi-worker
 uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
-```
-
-### Access Points
-
-| Endpoint | URL |
-|----------|-----|
-| 🌐 API Root | http://localhost:8000 |
-| 📖 Swagger Docs | http://localhost:8000/docs |
-| 📚 ReDoc | http://localhost:8000/redoc |
-| ❤️ Health Check | http://localhost:8000/health |
-| 🔌 WebSocket | ws://localhost:8000/ws/chat |
-
----
-
-## 📡 API Documentation
-
-### Authentication Endpoints (11)
-
-```http
+Access Points
+Endpoint	URL
+🌐 API Root	http://localhost:8000
+📖 Swagger Docs	http://localhost:8000/docs
+📚 ReDoc	http://localhost:8000/redoc
+❤️ Health Check	http://localhost:8000/health
+🔌 WebSocket	ws://localhost:8000/ws/chat
+API Documentation
+Authentication Endpoints (11)
 POST /auth/register/step1              # Step 1: Send OTP to email
 POST /auth/register/step2              # Step 2: Verify OTP
 POST /auth/register/step3              # Step 3: Complete registration
@@ -466,11 +386,7 @@ POST /auth/password-reset/send-otp     # Send OTP for password reset
 POST /auth/password-reset/confirm      # Confirm password reset with OTP
 POST /auth/forgot-password/send-otp    # Send forgot password OTP
 POST /auth/forgot-password/confirm     # Reset password with OTP
-```
-
-### User Endpoints (7)
-
-```http
+User Endpoints (7)
 GET    /user/profile               # Get user profile
 PUT    /user/profile               # Update user profile
 PUT    /user/username              # Update username
@@ -478,31 +394,19 @@ PUT    /user/password              # Update password
 GET    /user/email-preferences     # Get email preferences
 PUT    /user/email-preferences     # Update email preferences
 GET    /user/stats                 # Get user statistics
-```
-
-### Portfolio Endpoints (5)
-
-```http
+Portfolio Endpoints (5)
 GET    /portfolio/                 # Get user portfolio
 POST   /portfolio/                 # Add portfolio entry
 PUT    /portfolio/{portfolio_id}   # Update portfolio entry
 DELETE /portfolio/{portfolio_id}   # Delete portfolio entry
 POST   /portfolio/update-prices    # Update portfolio prices
-```
-
-### Chat Endpoints (5)
-
-```http
+Chat Endpoints (5)
 GET    /chats/                     # Get all chats
 POST   /chats/                     # Create new chat
 GET    /chats/{chat_id}            # Get chat with messages
 DELETE /chats/{chat_id}            # Delete chat
 PUT    /chats/{chat_id}/rename     # Rename chat
-```
-
-### Admin Endpoints (19)
-
-```http
+Admin Endpoints (22)
 POST   /admin/login/send-otp                   # Admin login - Send OTP
 POST   /admin/login/verify-otp                 # Admin login - Verify OTP
 GET    /admin/dashboard                        # Get dashboard statistics
@@ -522,112 +426,80 @@ GET    /admin/portfolio-reports/settings       # Get portfolio report settings
 PUT    /admin/portfolio-reports/settings       # Update portfolio report settings
 POST   /admin/system/control                   # System control (start/stop)
 GET    /admin/activity-logs                    # Get admin activity logs
-```
 
-### Root Endpoints (4)
-
-```http
+# Super Admin only (role: super_admin)
+GET    /admin/admins                           # List all admins
+PUT    /admin/admins/{admin_id}/deactivate     # Deactivate an admin
+PUT    /admin/admins/{admin_id}/reactivate     # Reactivate an admin
+Root Endpoints (4)
 GET    /                           # API Root
 GET    /health                     # Health Check
 GET    /mcp/tools                  # List MCP Tools
 GET    /scheduler/status           # Scheduler Status
-```
-
-### WebSocket (1)
-
-```http
+WebSocket (1)
 WS /ws/chat?token={jwt_token}      # Real-time chat
-```
+MCP Servers
+KUBERA uses 5 specialized MCP servers with 45 tools total:
 
----
-
-## 🔧 MCP Servers
-
-KUBERA uses 5 specialized MCP servers with **45 tools** total:
-
-### Server 1: Financial Data (`fin_data.py`) - 7 Tools
-
-| Tool | Description |
-|------|-------------|
-| `fetch_company_fundamentals` | Core fundamental metrics |
-| `fetch_historical_financials` | Historical financial data |
-| `fetch_balance_sheet_data` | Balance sheet components |
-| `fetch_cash_flow_data` | Cash flow statement |
-| `fetch_dividend_history` | Dividend data & sustainability |
-| `fetch_eps_analysis` | EPS trends & analysis |
-| `validate_stock_symbol` | Symbol validation |
-
-### Server 2: Market & Technical (`market_tech.py`) - 9 Tools
-
-| Tool | Description |
-|------|-------------|
-| `fetch_current_price_data` | Real-time price data |
-| `fetch_historical_price_data` | OHLCV historical data |
-| `fetch_technical_indicators` | SMA, RSI, MACD, BBands |
-| `fetch_volume_analysis` | Volume trends |
-| `fetch_volatility_metrics` | Beta, drawdown, Sharpe |
-| `fetch_comparative_performance` | Performance comparison |
-| `fetch_institutional_holding_data` | FII/DII holdings |
-| `fetch_liquidity_metrics` | Trading liquidity |
-| `validate_technical_data` | Data quality check |
-
-### Server 3: Governance & Compliance (`gov_compliance.py`) - 8 Tools
-
-| Tool | Description |
-|------|-------------|
-| `fetch_promoter_holding_data` | Promoter & pledging info |
-| `fetch_board_composition` | Board structure |
-| `fetch_audit_quality` | Auditor information |
-| `fetch_regulatory_compliance` | Regulatory status |
-| `fetch_shareholding_pattern` | Complete shareholding |
-| `fetch_related_party_transactions` | Related party deals |
-| `fetch_governance_score` | Governance quality score |
-| `fetch_insider_transactions` | Insider trading patterns |
-
-### Server 4: News & Sentiment (`news_sent.py`) - 10 Tools
-
-| Tool | Description |
-|------|-------------|
-| `fetch_news_articles` | Recent news articles |
-| `fetch_overall_news_sentiment` | Aggregate sentiment |
-| `fetch_analyst_ratings` | Analyst recommendations |
-| `fetch_social_sentiment` | Social media sentiment |
-| `fetch_company_announcements` | Official announcements |
-| `fetch_sector_sentiment` | Sector-wide sentiment |
-| `fetch_competitor_sentiment` | Competitor comparison |
-| `fetch_news_impact_analysis` | Price impact analysis |
-| `fetch_management_commentary` | Management guidance |
-| `calculate_sentiment_score` | Text sentiment scoring |
-
-### Server 5: Visualization (`visualization.py`) - 11 Tools
-
-| Tool | Description |
-|------|-------------|
-| `generate_price_volume_chart` | Price & volume chart |
-| `generate_candlestick_chart` | Candlestick chart |
-| `generate_technical_indicators_chart` | Technical chart |
-| `generate_fundamental_comparison_chart` | Comparison chart |
-| `generate_financial_trend_chart` | Trend chart |
-| `generate_performance_vs_benchmark_chart` | Benchmark comparison |
-| `generate_valuation_heatmap` | Valuation heatmap |
-| `generate_portfolio_composition_chart` | Portfolio pie/treemap |
-| `generate_dividend_timeline_chart` | Dividend timeline |
-| `generate_risk_return_scatter` | Risk-return scatter |
-| `validate_chart_data` | Chart data validation |
-
----
-
-## 🔌 WebSocket Protocol
-
-### Connect
-
-```javascript
-const ws = new WebSocket('ws://localhost:8000/ws/chat?token=YOUR_JWT_TOKEN');
-```
-
-### Client → Server Messages
-
-```javascript
+Server 1: Financial Data (fin_data.py) - 7 Tools
+Tool	Description
+fetch_company_fundamentals	Core fundamental metrics
+fetch_historical_financials	Historical financial data
+fetch_balance_sheet_data	Balance sheet components
+fetch_cash_flow_data	Cash flow statement
+fetch_dividend_history	Dividend data & sustainability
+fetch_eps_analysis	EPS trends & analysis
+validate_stock_symbol	Symbol validation
+Server 2: Market & Technical (market_tech.py) - 9 Tools
+Tool	Description
+fetch_current_price_data	Real-time price data
+fetch_historical_price_data	OHLCV historical data
+fetch_technical_indicators	SMA, RSI, MACD, BBands
+fetch_volume_analysis	Volume trends
+fetch_volatility_metrics	Beta, drawdown, Sharpe
+fetch_comparative_performance	Performance comparison
+fetch_institutional_holding_data	FII/DII holdings
+fetch_liquidity_metrics	Trading liquidity
+validate_technical_data	Data quality check
+Server 3: Governance & Compliance (gov_compliance.py) - 8 Tools
+Tool	Description
+fetch_promoter_holding_data	Promoter & pledging info
+fetch_board_composition	Board structure
+fetch_audit_quality	Auditor information
+fetch_regulatory_compliance	Regulatory status
+fetch_shareholding_pattern	Complete shareholding
+fetch_related_party_transactions	Related party deals
+fetch_governance_score	Governance quality score
+fetch_insider_transactions	Insider trading patterns
+Server 4: News & Sentiment (news_sent.py) - 10 Tools
+Tool	Description
+fetch_news_articles	Recent news articles
+fetch_overall_news_sentiment	Aggregate sentiment
+fetch_analyst_ratings	Analyst recommendations
+fetch_social_sentiment	Social media sentiment
+fetch_company_announcements	Official announcements
+fetch_sector_sentiment	Sector-wide sentiment
+fetch_competitor_sentiment	Competitor comparison
+fetch_news_impact_analysis	Price impact analysis
+fetch_management_commentary	Management guidance
+calculate_sentiment_score	Text sentiment scoring
+Server 5: Visualization (visualization.py) - 11 Tools
+Tool	Description
+generate_price_volume_chart	Price & volume chart
+generate_candlestick_chart	Candlestick chart
+generate_technical_indicators_chart	Technical chart
+generate_fundamental_comparison_chart	Comparison chart
+generate_financial_trend_chart	Trend chart
+generate_performance_vs_benchmark_chart	Benchmark comparison
+generate_valuation_heatmap	Valuation heatmap
+generate_portfolio_composition_chart	Portfolio pie/treemap
+generate_dividend_timeline_chart	Dividend timeline
+generate_risk_return_scatter	Risk-return scatter
+validate_chart_data	Chart data validation
+WebSocket Protocol
+Connect
+const ws = new WebSocket("ws://localhost:8000/ws/chat?token=YOUR_JWT_TOKEN");
+Client → Server Messages
 // Send message
 {
     "type": "message",
@@ -639,11 +511,7 @@ const ws = new WebSocket('ws://localhost:8000/ws/chat?token=YOUR_JWT_TOKEN');
 {
     "type": "ping"
 }
-```
-
-### Server → Client Messages
-
-```javascript
+Server → Client Messages
 // Text chunk (streaming)
 {
     "type": "text_chunk",
@@ -684,68 +552,40 @@ const ws = new WebSocket('ws://localhost:8000/ws/chat?token=YOUR_JWT_TOKEN');
     "message": "Rate limit exceeded",
     "code": "RATE_LIMITED"
 }
-```
-
----
-
-## ⏰ Background Jobs
-
-### Configured Jobs
-
-| Job | Frequency | Description |
-|-----|-----------|-------------|
-| Portfolio Price Update | Every 30 minutes | Updates stock prices via yfinance |
-| Portfolio Reports | Configurable | Sends email reports (daily/weekly/monthly) |
-| Cleanup OTPs | Every hour | Removes expired OTPs |
-| Cleanup Tokens | Every 6 hours | Removes revoked/expired tokens |
-
-### Check Scheduler Status
-
-```bash
+Background Jobs
+Configured Jobs
+Job	Frequency	Description
+Portfolio Price Update	Every 30 minutes	Updates stock prices via yfinance
+Portfolio Reports	Configurable	Sends email reports (daily/weekly/monthly)
+Cleanup OTPs	Every hour	Removes expired OTPs
+Cleanup Tokens	Every 6 hours	Removes revoked/expired tokens
+Check Scheduler Status
 curl http://localhost:8000/scheduler/status
-```
+Rate Limiting
+4-Level Fail-Fast System (DB-driven & live-configurable)
+All limits are stored in the database and enforced per-prompt via RateLimitService. Changes made in the Admin Panel take effect on the next prompt — no server restart required.
 
----
-
-## ⚡ Rate Limiting
-
-### 4-Level Fail-Fast System
-
-| Level | Limit | Window | Action |
-|-------|-------|--------|--------|
-| 🚀 Burst | 10 prompts | 1 minute | Block immediately |
-| 💬 Per-Chat | 50 prompts | Per chat | Block chat |
-| ⏰ Hourly | 150 prompts | 1 hour | Block for hour |
-| 📅 Daily | 1000 prompts | 24 hours | Block for day |
-
-### Admin Controls
-
-- ✅ Update limits globally
-- ✅ Set per-user overrides
-- ✅ Whitelist users (no limits)
-- ✅ View violation logs
-
----
-
-## 📧 Email Notifications
-
-### 15+ Email Types
-
-| Category | Templates |
-|----------|-----------|
-| 🔑 OTP Emails | Registration, Password Reset, Admin Login |
-| 👤 Account Emails | Welcome, Password Changed, Account Deactivated |
-| ⚡ Rate Limit Emails | Burst/Hourly/Daily Limit Exceeded |
-| 📊 Portfolio Emails | Daily/Weekly/Monthly Reports |
-| 🔔 System Emails | Maintenance, Security Alerts |
-
----
-
-## 🐳 Docker Deployment
-
-### Quick Start
-
-```bash
+Level	Default	Window	Action
+🚀 Burst	10 prompts	1 minute	Block immediately
+💬 Per-Chat	50 prompts	Per chat session	Block prompt
+⏰ Hourly	150 prompts	1 hour	Block for remainder
+📅 Daily	1000 prompts	24 hours	Block for remainder
+Admin Controls
+✅ Update limits globally (live, no restart)
+✅ Set per-user overrides (takes priority over global)
+✅ Whitelist users (completely bypass all limits)
+✅ Reset individual user counters
+✅ View violation logs with user info and timestamp
+Email Notifications
+15+ Email Types
+Category	Templates
+🔑 OTP Emails	Registration, Password Reset, Admin Login
+👤 Account Emails	Welcome, Password Changed, Account Deactivated
+⚡ Rate Limit Emails	Burst/Hourly/Daily Limit Exceeded
+📊 Portfolio Emails	Daily/Weekly/Monthly Reports
+🔔 System Emails	Maintenance, Security Alerts
+Docker Deployment
+Quick Start
 # Build and run
 docker-compose up -d
 
@@ -754,20 +594,13 @@ docker-compose logs -f backend
 
 # Stop
 docker-compose down
-```
-
-### Services
-
-| Service | Port | Description |
-|---------|------|-------------|
-| backend | 8000 | FastAPI application |
-| postgres | 5432 | PostgreSQL database |
-| redis | 6379 | Redis cache (optional) |
-| pgadmin | 5050 | Database management |
-
-### Production Deployment
-
-```bash
+Services
+Service	Port	Description
+backend	8000	FastAPI application
+postgres	5432	PostgreSQL database
+redis	6379	Redis cache (optional)
+pgadmin	5050	Database management
+Production Deployment
 # Build production image
 docker build -t kubera-backend:latest .
 
@@ -777,15 +610,8 @@ docker run -d \
   --env-file .env \
   -p 8000:8000 \
   kubera-backend:latest
-```
-
----
-
-## 💻 Development
-
-### Code Style
-
-```bash
+Development
+Code Style
 # Format code
 black app/ mcp_servers/ scripts/
 
@@ -797,11 +623,7 @@ flake8 app/ mcp_servers/ scripts/
 
 # Type checking
 mypy app/
-```
-
-### Database Migrations
-
-```bash
+Database Migrations
 # Create migration
 python scripts/run_migrations.py create "description"
 
@@ -810,87 +632,35 @@ python scripts/run_migrations.py migrate
 
 # Check status
 python scripts/run_migrations.py status
-```
-
----
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-pytest
-
-# Run with coverage
-pytest --cov=app --cov-report=html
-
-# Run specific test file
-pytest tests/test_auth.py
-
-# Run with logs
-pytest -s -v
-
-# Run only unit tests
-pytest -m unit
-
-# Run only integration tests
-pytest -m integration
-```
-
----
-
-## 🔍 Troubleshooting
-
-### Common Issues
-
-#### MCP Client Not Initializing
-
-```bash
+Troubleshooting
+Common Issues
+MCP Client Not Initializing
 # Check if all required API keys are set
 echo $OPENROUTER_API_KEY
 
 # Verify MCP server files exist
 ls mcp_servers/
-```
-
-#### Database Connection Failed
-
-```bash
+Database Connection Failed
 # Check PostgreSQL is running
 pg_isready -h localhost -p 5432
 
 # Verify database exists
 psql -l | grep kubera_db
-```
-
-#### WebSocket Connection Issues
-
-```bash
+WebSocket Connection Issues
 # Check if server is running
 curl http://localhost:8000/health
 
 # Verify JWT token is valid
-```
-
-#### Email Not Sending
-
-```bash
+Email Not Sending
 # Verify SMTP settings
 # For Gmail, ensure "Less secure app access" or use App Passwords
-```
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
-
-### Commit Convention
-
-```
+Contributing
+Fork the repository
+Create feature branch (git checkout -b feature/amazing-feature)
+Commit changes (git commit -m 'Add amazing feature')
+Push to branch (git push origin feature/amazing-feature)
+Open Pull Request
+Commit Convention
 feat: Add new feature
 fix: Bug fix
 docs: Documentation update
@@ -898,58 +668,36 @@ style: Code style changes
 refactor: Code refactoring
 test: Add/update tests
 chore: Maintenance tasks
-```
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 📞 Support
-
-- 📧 **Email**: support@kubera.ai
-- 📖 **Documentation**: https://docs.kubera.ai
-- 🐛 **Issues**: https://github.com/yourusername/kubera-backend/issues
-
----
-
-## 🙏 Acknowledgments
-
-- **OpenRouter** for multi-model LLM access
-- **FastAPI** team for the amazing framework
-- **FastMCP** for MCP protocol implementation
-- **yfinance** for stock data
-
----
-
-## 📊 Project Statistics
-
-| Metric | Count |
-|--------|-------|
-| 📁 Total Files | 150+ |
-| 📝 Lines of Code | 15,000+ |
-| 🌐 REST Endpoints | 50 |
-| 🔌 WebSocket Endpoints | 1 |
-| 🗄️ Database Tables | 15 |
-| 📇 Database Indexes | 60+ |
-| 🔗 Foreign Keys | 10 |
-| ✅ Constraints | 25+ |
-| ⚡ Triggers | 9 |
-| 🤖 MCP Servers | 5 |
-| 🔧 MCP Tools | 45 |
-| ⏰ Background Jobs | 4 |
-| 📧 Email Templates | 15+ |
-| 📦 Python Packages | 50+ |
-| 🐳 Docker Services | 4 |
-
----
-
-## 🚀 Quick Start
-
-```bash
+Support
+📧 Email: tejascm007@gmail.com
+🐛 Issues: https://github.com/yourusername/kubera-backend/issues
+🙏 Acknowledgments
+OpenRouter for multi-model LLM access
+FastAPI team for the amazing framework
+FastMCP for MCP protocol implementation
+yfinance for stock data
+📊 Project Statistics
+Metric	Count
+📁 Total Files	150+
+📝 Lines of Code	15,000+
+🌐 REST Endpoints	53
+🔌 WebSocket Endpoints	1
+🗄️ Database Tables	15
+📇 Database Indexes	60+
+🔗 Foreign Keys	10
+✅ Constraints	25+
+⚡ Triggers	9
+🤖 MCP Servers	5
+🔧 MCP Tools	45
+⏰ Background Jobs	4
+📧 Email Templates	15+
+👤 Admin Roles	2 (admin, super_admin)
+📦 Python Packages	50+
+🐳 Docker Services	4
+🚀 Quick Start
 # 1. Setup
 cp .env.example .env
 # Edit .env with your values
@@ -968,13 +716,49 @@ python main.py
 
 # OR with Docker
 docker-compose up -d
-```
+Version: 1.0.0 | Last Updated: May 2026
 
----
+About
+Mini project
 
-<div align="center">
-
-
-**Version**: 1.0.0 | **Last Updated**: December 2025
-
-</div>
+Resources
+ Readme
+ Activity
+Stars
+ 0 stars
+Watchers
+ 0 watching
+Forks
+ 0 forks
+Report repository
+Releases
+No releases published
+Packages
+No packages published
+Contributors
+2
+@tejascm1308
+tejascm1308
+@tejascm007
+tejascm007 Tejas C M
+Languages
+Python
+97.0%
+ 
+PLpgSQL
+2.7%
+ 
+Dockerfile
+0.3%
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
